@@ -32,8 +32,8 @@ app.get('/api/persons', (req, res)=>{
 })
 
 app.get('/api/info', (req, res)=>{
-    var currentdate = new Date(); 
-    var datetime = "Last Sync: " + currentdate.getDate() + "/"
+    const currentdate = new Date(); 
+    const datetime = currentdate.getDate() + "/"
     + (currentdate.getMonth()+1)  + "/" 
     + currentdate.getFullYear() + " @ "  
     + currentdate.getHours() + ":"  
@@ -41,6 +41,17 @@ app.get('/api/info', (req, res)=>{
     + currentdate.getSeconds();
     
     res.send(`<p>Phonebook has info for ${persons.length} people</p><p>${datetime}</p>`)
+})
+
+app.get('/api/persons/:id',(req, res)=>{
+    const id = Number(req.params.id) // gets id from URL
+    const person = persons.find(person => person.id === id)
+
+    if (person) {
+        res.json(person)
+    } else {
+        res.status(404).end()
+    }
 })
 
 const PORT = 3001   // declare port #
